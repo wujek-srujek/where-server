@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <springProfile name="cloud">
+        <property name="LOG_FILE" value="${HOME}/logs/where.log"/>
+
+        <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+        <!-- set the root logger level at the end of this file -->
+        <!-- this root block just installs the appenders for the 'cloud' profile -->
+        <root>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!cloud">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+        <!-- set the root logger level at the end of this file -->
+        <!-- this root block just installs the appenders for the 'cloud' profile -->
+        <root>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <logger name="com.where" level="ALL"/>
+
+    <root level="INFO"/>
+</configuration>

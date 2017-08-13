@@ -1,0 +1,70 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.6.RELEASE'
+}
+
+repositories {
+    jcenter()
+}
+
+ext {
+    javaVersion = JavaVersion.VERSION_1_8
+    gradleVersion = '4.1'
+}
+
+assert JavaVersion.current() >= javaVersion:
+        "At least Java $javaVersion is required, current JVM is ${JavaVersion.current()}"
+
+apply plugin: 'groovy'
+apply plugin: 'findbugs'
+apply plugin: 'idea'
+
+idea {
+    project {
+        languageLevel = javaVersion
+    }
+}
+
+defaultTasks = ['clean', 'build']
+
+targetCompatibility = javaVersion
+sourceCompatibility = targetCompatibility
+
+findbugs {
+    effort = 'max'
+    reportLevel = 'low'
+}
+
+// this will also take care of Java compilation options for Groovy tasks
+tasks.withType(AbstractCompile) {
+    options.compilerArgs << '-parameters'
+    options.deprecation = true
+    options.debug = true
+    options.debugOptions.debugLevel = 'source,lines,vars'
+    options.encoding = java.nio.charset.StandardCharsets.UTF_8.name()
+    options.incremental = true
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = project.hasProperty('findbugsXml')
+        html.enabled = !xml.enabled
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+
+    runtime 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    runtime 'org.postgresql:postgresql'
+    runtime 'org.flywaydb:flyway-core'
+    runtime 'org.hibernate:hibernate-java8'
+}
+
+task wrapper(type: Wrapper) {
+    description = 'Defines the common gradle distribution for this project.'
+    gradleVersion = project.gradleVersion
+}

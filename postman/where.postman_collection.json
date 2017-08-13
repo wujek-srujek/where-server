@@ -1,0 +1,99 @@
+{
+	"variables": [],
+	"info": {
+		"name": "where",
+		"_postman_id": "3de53deb-6387-65bb-0644-c93144ec4fcf",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get latest location",
+			"request": {
+				"url": "{{api-base}}",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Show latest location",
+			"request": {
+				"url": "{{api-base}}/show",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save location - Munich",
+			"request": {
+				"url": "{{api-base}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"locations\": [\n\t\t{\n\t\t\t\"timestampUtc\": 1502651071,\n\t\t\t\"timeZone\": \"Europe/Berlin\",\n\t\t\t\"latitude\": 48.137154,\n\t\t\t\"longitude\": 11.576124,\n\t\t\t\"accuracy\": null\n\t\t}\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save location - Lima",
+			"request": {
+				"url": "{{api-base}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"locations\": [\n\t\t{\n\t\t\t\"timestampUtc\": 1502792649.2,\n\t\t\t\"timeZone\": \"America/Lima\",\n\t\t\t\"latitude\":-12.046374,\n\t\t\t\"longitude\": -77.042793,\n\t\t\t\"accuracy\": 17\n\t\t}\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save location - Sydney",
+			"request": {
+				"url": "{{api-base}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"locations\": [\n\t\t{\n\t\t\t\"timestampUtc\": 1503138291.3,\n\t\t\t\"timeZone\": \"Australia/Sydney\",\n\t\t\t\"latitude\":-33.865143,\n\t\t\t\"longitude\": 151.2099\n\t\t}\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
