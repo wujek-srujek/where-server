@@ -8,10 +8,13 @@ import javax.validation.Valid;
 import com.where.server.dto.LocationDto;
 import com.where.server.dto.LocationListDto;
 import com.where.server.service.LocationService;
+import com.where.server.service.ReadLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +32,12 @@ public class LocationController {
 
     private final LocationService locationService;
 
+    private final ReadLogService readLogService;
+
     @Autowired
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, ReadLogService readLogService) {
         this.locationService = locationService;
+        this.readLogService = readLogService;
     }
 
     @RequestMapping(
@@ -46,7 +52,9 @@ public class LocationController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<LocationDto> getLatest() {
+    public ResponseEntity<LocationDto> getLatest(@AuthenticationPrincipal UserDetails currentUserDetails) {
+        readLogService.saveAsync(currentUserDetails.getUsername());
+
         return locationService.getLatest()
                 .map(locationDto -> new ResponseEntity<>(locationDto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -56,7 +64,9 @@ public class LocationController {
             path = "show",
             method = RequestMethod.GET
     )
-    public RedirectView showLatest() {
+    public RedirectView showLatest(@AuthenticationPrincipal UserDetails currentUserDetails) {
+        readLogService.saveAsync(currentUserDetails.getUsername());
+
         String url = locationService.getLatest()
                 .map(locationDto -> String.format(
                         Locale.ROOT,
